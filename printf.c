@@ -28,6 +28,47 @@ void _puts(char *str)
 }
 
 /**
+ *print_int - prints an int
+ *@n: The int to be printed
+ *Return: Nothing
+ */
+
+void print_int(int n)
+{
+	if (n < 0)
+	{
+		putchar('-');
+		n = -n;
+	}
+	if (n / 10 > 0)
+	{
+		print_int(n / 10);
+	}
+	putchar(n % 10 + '0');
+}
+
+/**
+ *count_digits - counts the digits
+ *@n: The number to count its digits
+ *Return: The amount of digits counted
+ */
+
+int count_digits(int n)
+{
+	int count = 0;
+	if (n < 0)
+		n = -n;
+	if (n == 0)
+		return 1;
+	while (n > 0)
+	{
+		count++;
+		n /= 10;
+	}
+	return count;
+}
+
+/**
  *_printf - prints characters according to a format
  *@format: The format of the character to be printed
  *Return: The number of characters printed
@@ -35,7 +76,7 @@ void _puts(char *str)
 
 int _printf(const char *format, ...)
 {
-	int i = 0, counter = 0;
+	int i = 0, d, counter = 0;
 	char *str, c;
 	va_list args;
 
@@ -65,6 +106,13 @@ int _printf(const char *format, ...)
 				_puts(str);
 				counter += strlen(str);
 				i++;
+				break;
+			}
+			if (format[i + 1] == 'd' || format[i + 1] == 'i')
+			{
+				d = va_arg(args, int);
+				print_int(d);
+				counter += count_digits(d);
 				break;
 			}
 			break;
